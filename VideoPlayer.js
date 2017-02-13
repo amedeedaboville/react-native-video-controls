@@ -39,6 +39,9 @@ export default class VideoPlayer extends Component {
             volumeFillWidth: 0,
             seekerFillWidth: 0,
             showControls: true,
+            hiddenControls: [], // can be ['back', 'volume', 'fullscreen', 'seeker', 'title', 'playpause', 'timer']
+            showVolume: false,
+            showFullscreen: false,
             volumePosition: 0,
             seekerPosition: 0,
             volumeOffset: 0,
@@ -784,10 +787,10 @@ export default class VideoPlayer extends Component {
                     style={[ styles.controls.column, styles.controls.vignette,
                 ]}>
                     <View style={ styles.controls.topControlGroup }>
-                        { this.renderBack() }
+                        { !this.props.hiddenControls.includes('back') && this.renderBack() }
                         <View style={ styles.controls.pullRight }>
-                            { this.renderVolume() }
-                            { this.renderFullscreen() }
+                            { !this.props.hiddenControls.includes('volume') && this.renderVolume() }
+                            { !this.props.hiddenControls.includes('fullscreen') && this.renderFullScreen() }
                         </View>
                     </View>
                 </Image>
@@ -870,15 +873,15 @@ export default class VideoPlayer extends Component {
                     styles.player.container,
                     styles.controls.seekbar
                 ]}>
-                    { this.renderSeekbar() }
+                    { !this.props.hiddenControls.includes('seeker') && this.renderSeekbar() }
                 </View>
                 <View style={[
                     styles.controls.column,
                     styles.controls.bottomControlGroup
                 ]}>
-                    { this.renderPlayPause() }
-                    { this.renderTitle() }
-                    { this.renderTimer() }
+                    { !this.props.hiddenControls.includes('playpause') && this.renderPlayPause() }
+                    { !this.props.hiddenControls.includes('title') && this.renderTitle() }
+                    { !this.props.hiddenControls.includes('timer') && this.renderTimer() }
                 </View>
             </Image>
             </Animated.View>
