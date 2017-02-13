@@ -656,6 +656,7 @@ export default class VideoPlayer extends Component {
                 this.clearControlTimeout();
                 state.seeking = true;
                 this.setState( state );
+                this.setSeekerPosition( gestureState.x0 - 28);
             },
 
             /**
@@ -893,32 +894,36 @@ export default class VideoPlayer extends Component {
      */
     renderSeekbar() {
         return (
-            <View
-                style={ styles.seek.track }
-                onLayout={ event => {
-                    this.player.seekerWidth = event.nativeEvent.layout.width;
-                }}
+            <View style={ styles.seek.touchArea }
+                { ...this.player.seekPanResponder.panHandlers }
             >
-                <View style={[
-                    styles.seek.fill,
-                    {
-                        width: this.state.seekerFillWidth,
-                        backgroundColor: this.props.seekColor || '#FFF'
-                    }
-                ]}>
-                    <View
-                        style={[
-                            styles.seek.handle,
-                            {
-                                left: this.state.seekerPosition
-                            }
-                        ]}
-                        { ...this.player.seekPanResponder.panHandlers }
+                <View
+                    style={ styles.seek.track }
+                    onLayout={ event => {
+                        this.player.seekerWidth = event.nativeEvent.layout.width;
+                    }}
+                >
+                    <View style={[
+                        styles.seek.fill,
+                        {
+                            width: this.state.seekerFillWidth,
+                            backgroundColor: this.props.seekColor || '#FFF'
+                        }
+                    ]}
                     >
-                        <View style={[
-                            styles.seek.circle,
-                            { backgroundColor: this.props.seekColor || '#FFF' } ]}
-                        />
+                        <View
+                            style={[
+                                styles.seek.handle,
+                                {
+                                    left: this.state.seekerPosition
+                                }
+                            ]}
+                        >
+                            <View style={[
+                                styles.seek.circle,
+                                { backgroundColor: this.props.seekColor || '#FFF' } ]}
+                            />
+                        </View>
                     </View>
                 </View>
             </View>
@@ -1199,13 +1204,19 @@ const styles = {
         },
     }),
     seek: StyleSheet.create({
+        touchArea: {
+            alignSelf: 'stretch',
+            justifyContent: 'center',
+            height: 40,
+            marginLeft: 28,
+            marginRight: 28,
+            backgroundColor: 'rgba(0,0,0,0)',
+        },
         track: {
             alignSelf: 'stretch',
             justifyContent: 'center',
             backgroundColor: '#333',
             height: 4,
-            marginLeft: 28,
-            marginRight: 28,
         },
         fill: {
             alignSelf: 'flex-start',
