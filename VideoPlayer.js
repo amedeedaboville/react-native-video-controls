@@ -226,8 +226,12 @@ export default class VideoPlayer extends Component {
         if ( delta < 300 ) {
             this.methods.toggleFullscreen();
         }
-
-        this.methods.toggleControls();
+        if (this.state.showControls) {
+            this.togglePlayPause();
+        }
+        else {
+            this.methods.toggleControls();
+        }
         state.lastScreenPress = time;
 
         this.setState( state );
