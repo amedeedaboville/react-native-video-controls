@@ -227,7 +227,7 @@ export default class VideoPlayer extends Component {
             this.methods.toggleFullscreen();
         }
         if (this.state.showControls) {
-            this.togglePlayPause();
+            this.methods.togglePlayPause();
         }
         else {
             this.methods.toggleControls();
